@@ -77,7 +77,12 @@ function media(img, prefix, label, ratio) {
   }
   return `<div class="media ${r}"><div class="ph"><span class="mono">${txt(label || img?.alt || 'Image')}</span></div></div>`;
 }
-
+function natural(img, prefix) {
+  // Gallery image at its own proportions (no crop).
+  if (!img.src) return media(img, prefix, img.alt, img.ratio || '16-9');
+  const wh = img.w && img.h ? ` width="${img.w}" height="${img.h}"` : '';
+  return `<div class="media natural"><img src="${prefix}${esc(img.src)}" alt="${esc(img.alt || '')}"${wh} loading="lazy" decoding="async"></div>`;
+}
 // ---------- layout ----------
 function head({ title, description, root, canonical }) {
   return `<!doctype html>
@@ -263,9 +268,10 @@ function projectPage(p, next) {
   const cover = p.cover && p.cover.src ? media({ ...p.cover, src: `${p.slug}/${p.cover.src}`, ratio: p.cover.ratio || '16-9' }, '', '', '16-9')
     : media(null, '', `Cover · ${p.cover?.alt || p.title}`, '16-9');
   const gallery = (p.gallery || []).map((g) => {
-    const span = g.span === 6 ? 's6' : 's12';
+    const span = g.span || 12;
+    const pos = g.start ? ` style="grid-column:${g.start} / span ${span}"` : '';
     const img = g.src ? { ...g, src: `${p.slug}/${g.src}` } : g;
-    return `<figure class="${span} reveal">${media(img, '', g.alt, g.ratio || (span === 's6' ? '4-5' : '16-9'))}${g.caption ? `<figcaption class="mono muted">${txt(g.caption)}</figcaption>` : ''}</figure>`;
+    return `<figure class="s${span}${g.start ? ' at' : ''} reveal"${pos}>${natural(img, '')}${g.caption ? `<figcaption class="mono muted">${txt(g.caption)}</figcaption>` : ''}</figure>`;
   }).join('\n');
   const desc = (p.summary || site.description).replace(/\[[^\]]*\]/g, '').trim() || site.description;
 
