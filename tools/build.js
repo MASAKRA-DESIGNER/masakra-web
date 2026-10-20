@@ -167,10 +167,6 @@ ${media(cover ? { ...cover, ratio: cover.ratio || ratio } : null, root, `Image Â
 ${header(root, true)}
 <main id="main">
 <section id="top" class="wrap hero">
-<div class="hero-top rise d1 stack-m">
-<span class="mono muted">Independent brand design &amp; strategy</span>
-<span class="mono muted status"><i class="pulse"></i>${esc(site.status)}</span>
-</div>
 <h1 class="hero-h">
 <span class="rise d2" style="display:block">Fewer elements.</span>
 <span class="rise d3 soft" style="display:block">More weight<span class="sq pop" aria-hidden="true"></span></span>
