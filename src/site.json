@@ -1,0 +1,21 @@
+{
+  "name": "MASAKRA",
+  "owner": "Miroslav Švec",
+  "url": "https://www.masakra.sk",
+  "description": "MASAKRA — independent brand design & strategy studio of Miroslav Švec. Identity systems, packaging and merch for brands and agencies.",
+  "email": "create@masakra.sk",
+  "location": "Prešov, Slovakia",
+  "instagram": "https://www.instagram.com/masakra.sk/",
+  "facebook": "https://www.facebook.com/masakra.sk",
+  "status": "Taking on new projects",
+  "startingPrice": "[doplň: cena od, napr. $3,500]",
+  "quote": {
+    "text": "[doplň: citát klienta — jedna-dve vety o spolupráci, ideálne s výsledkom]",
+    "name": "[Meno]",
+    "role": "[Rola, firma]"
+  },
+  "clients": [
+    "L'Oréal Paris", "Lancôme", "Hugo Boss", "Maybelline New York", "NYX Professional Makeup",
+    "Garnier", "La Roche-Posay", "Hell Energy", "Office Shoes", "Rytmus"
+  ]
+}
