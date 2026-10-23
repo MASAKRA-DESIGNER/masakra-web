@@ -3,6 +3,8 @@
 // Usage: node tools/build.js [--prod]
 //   --prod  leaves out projects marked `draft: true` (use for the live site)
 // Output goes to ./dist. Every link is relative, so the folder works on any host.
+// Two languages: English at the root (primary), Slovak under /sk/.
+// UI texts live in src/texts.json; a project's Slovak version in src/projects/<slug>/index.sk.md.
 
 const fs = require('fs');
 const path = require('path');
@@ -14,7 +16,15 @@ const SRC = path.join(ROOT, 'src');
 const OUT = path.join(ROOT, 'dist');
 const PROD = process.argv.includes('--prod');
 
-const site = JSON.parse(fs.readFileSync(path.join(SRC, 'site.json'), 'utf8'));
+const siteBase = JSON.parse(fs.readFileSync(path.join(SRC, 'site.json'), 'utf8'));
+const TEXTS = JSON.parse(fs.readFileSync(path.join(SRC, 'texts.json'), 'utf8'));
+const LANGS = { en: '', sk: 'sk/' };            // language → folder prefix
+let L = TEXTS.en, LANG = 'en', site = siteBase;   // set per language in the build loop
+function setLang(lang) {
+  LANG = lang; L = TEXTS[lang];
+  const { sk, ...base } = siteBase;
+  site = lang === 'en' ? base : { ...base, ...(siteBase[lang] || {}) };
+}
 const logoBlack = inlineSvg('logo-black.svg');
 const logoWhite = inlineSvg('logo-white-volt.svg');
 
@@ -52,11 +62,26 @@ function loadProjects() {
     if (!fs.existsSync(file)) continue;
     const { data, content } = matter(fs.readFileSync(file, 'utf8'));
     if (PROD && data.draft) continue;
-    list.push({ slug, ...data, body: content });
+    const p = { slug, ...data, body: content, i18n: {} };
+    for (const lang of Object.keys(LANGS)) {
+      const f = path.join(dir, slug, `index.${lang}.md`);
+      if (fs.existsSync(f)) { const t = matter(fs.readFileSync(f, 'utf8')); p.i18n[lang] = { ...t.data, body: t.content }; }
+    }
+    list.push(p);
   }
   list.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
   list.forEach((p, i) => { p.num = pad2(i + 1); });
   return list;
+}
+// Project in the current language: translated fields override the English ones.
+function loc(p) {
+  const t = p.i18n[LANG];
+  if (!t) return p;
+  const out = { ...p, ...t };
+  if (t.cover) out.cover = { ...p.cover, ...t.cover };
+  if (t.alts && p.gallery) out.gallery = p.gallery.map((g, i) => (t.alts[i] ? { ...g, alt: t.alts[i] } : g));
+  if (!t.body || !t.body.trim()) out.body = p.body;
+  return out;
 }
 function sections(md) {
   // Split markdown on "## Heading" into [{title, html}]
@@ -84,19 +109,28 @@ function natural(img, prefix) {
   return `<div class="media natural"><img src="${prefix}${esc(img.src)}" alt="${esc(img.alt || '')}"${wh} loading="lazy" decoding="async"></div>`;
 }
 // ---------- layout ----------
-function head({ title, description, root, canonical }) {
+// `root` = relative path to the site root (where assets/ and work/<slug>/ images live).
+// `base` = relative path to the home folder of the current language (root for EN, root + 'sk/' for SK).
+// `page` = the page's path inside a language folder ('index.html' or 'work/<slug>.html').
+const abs = (lang, page) => `${site.url}/${LANGS[lang]}${page === 'index.html' ? '' : page}`;
+
+function head({ title, description, root, page }) {
+  const alternates = Object.keys(LANGS).map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(abs(l, page))}">`).join('\n');
   return `<!doctype html>
-<html lang="en" class="no-js">
+<html lang="${L.htmlLang}" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="${esc(canonical)}">
+<link rel="canonical" href="${esc(abs(LANG, page))}">
+${alternates}
+<link rel="alternate" hreflang="x-default" href="${esc(abs('en', page))}">
 <meta property="og:type" content="website">
+<meta property="og:locale" content="${L.ogLocale}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:url" content="${esc(canonical)}">
+<meta property="og:url" content="${esc(abs(LANG, page))}">
 <meta property="og:image" content="${esc(site.url)}/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#000000">
@@ -108,34 +142,42 @@ function head({ title, description, root, canonical }) {
 <script defer src="${root}assets/js/main.js"></script>
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>`;
+<a class="skip" href="#main">${esc(L.skip)}</a>`;
 }
-function header(root, home) {
-  const h = home ? '' : `${root}index.html`;
+function langSwitch(root, page) {
+  // EN / SK — the current language is plain text, the other one links to the same page in that language.
+  const items = Object.keys(LANGS).map((l) => (l === LANG
+    ? `<span aria-current="true">${l.toUpperCase()}</span>`
+    : `<a href="${root}${LANGS[l]}${page}" hreflang="${l}" lang="${l}" title="${esc(TEXTS[l].langName)}">${l.toUpperCase()}</a>`));
+  return `<div class="lang mono" role="group" aria-label="${esc(L.langLabel)}">${items.join('<span class="sep" aria-hidden="true">/</span>')}</div>`;
+}
+function header(root, base, home, page) {
+  const h = home ? '' : `${base}index.html`;
   return `<header class="wrap site-header">
-<a class="logo" href="${root}index.html" aria-label="MASAKRA — home">${logoBlack}</a>
+<a class="logo" href="${base}index.html" aria-label="${esc(L.home)}">${logoBlack}</a>
 <nav class="nav" aria-label="Primary">
-<a class="mark hide-m" href="${h}#work">Work</a>
-<a class="mark hide-m" href="${h}#agencies">For agencies</a>
-<a class="mark hide-m" href="${h}#approach">Approach</a>
-<a class="btn sm" href="${h}#contact">Start a project <span class="arrow" aria-hidden="true">→</span></a>
+<a class="mark hide-m" href="${h}#work">${esc(L.navWork)}</a>
+<a class="mark hide-m" href="${h}#agencies">${esc(L.navAgencies)}</a>
+<a class="mark hide-m" href="${h}#approach">${esc(L.navApproach)}</a>
+${langSwitch(root, page)}
+<a class="btn sm" href="${h}#contact">${esc(L.navCta)} <span class="arrow" aria-hidden="true">→</span></a>
 </nav>
 </header>`;
 }
-function contactAndFooter(root) {
+function contactAndFooter() {
   return `<section id="contact" class="dark contact">
 <div class="wrap section">
-<span class="mono muted">Contact</span>
-<h2 class="hero-h reveal">Have a brand that should <span class="soft">stand for something?</span></h2>
+<span class="mono muted">${esc(L.contactLabel)}</span>
+<h2 class="hero-h reveal">${L.contactTitle}</h2>
 <a class="mail link-dark" href="mailto:${esc(site.email)}">${esc(site.email)} <svg class="arrow" aria-hidden="true" width="40" height="40" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 13L13 5M6 5h7v7"/></svg></a>
-<p class="contact-note">Send a few lines about the brand, the timeline and the budget. You'll hear back within one business day.</p>
+<p class="contact-note">${esc(L.contactNote)}</p>
 </div>
 <footer class="wrap site-footer">
 <span class="mono muted">© ${new Date().getFullYear()} ${esc(site.name)} — ${esc(site.owner)} · ${esc(site.location)}</span>
 <nav aria-label="Social">
 <a class="link-dark plain mono" href="${esc(site.instagram)}">Instagram</a>
 <a class="link-dark plain mono" href="${esc(site.facebook)}">Facebook</a>
-<a class="link-dark plain mono" href="#top">Back to top ↑</a>
+<a class="link-dark plain mono" href="#top">${esc(L.backTop)}</a>
 </nav>
 </footer>
 </section>
@@ -145,7 +187,9 @@ function contactAndFooter(root) {
 
 // ---------- pages ----------
 function homePage(projects) {
-  const root = '';
+  const root = LANGS[LANG] ? '../' : '';
+  const base = '';
+  const page = 'index.html';
   const featured = projects.filter((p) => p.featured).slice(0, 4);
   const rest = projects.filter((p) => !featured.includes(p));
   const pattern = [{ span: 's7', off: false }, { span: 's5', off: true }, { span: 's5', off: false }, { span: 's7', off: true }];
@@ -153,44 +197,47 @@ function homePage(projects) {
     const pt = pattern[i % 4];
     const ratio = pt.span === 's7' ? '4-3' : '4-5';
     const cover = p.cover && p.cover.src ? { ...p.cover, src: `work/${p.slug}/${p.cover.src}` } : null;
-    return `<a class="work-card ${pt.span}${pt.off ? ' offset' : ''} reveal" href="work/${p.slug}.html">
+    return `<a class="work-card ${pt.span}${pt.off ? ' offset' : ''} reveal" href="${base}work/${p.slug}.html">
 ${media(cover ? { ...cover, ratio: cover.ratio || ratio } : null, root, `Image · ${p.cover?.alt || p.title}`, ratio)}
 <div class="card-meta"><div class="card-title"><span class="mono muted">${p.num}</span><span class="t">${txt(p.title)}</span></div>
 <div class="card-tag"><span class="mono muted">${txt(p.tag || p.category)}</span>${arrowNE}</div></div>
 </a>`;
   }).join('\n');
-  const rows = rest.map((p) => `<a class="idx-row" href="work/${p.slug}.html"><span class="l"><span class="mono muted">${p.num}</span><span class="t">${txt(p.title)}</span></span><span class="r"><span class="mono muted">${txt(p.tag || p.category)}</span><span aria-hidden="true">→</span></span></a>`).join('\n');
+  const rows = rest.map((p) => `<a class="idx-row" href="${base}work/${p.slug}.html"><span class="l"><span class="mono muted">${p.num}</span><span class="t">${txt(p.title)}</span></span><span class="r"><span class="mono muted">${txt(p.tag || p.category)}</span><span aria-hidden="true">→</span></span></a>`).join('\n');
   const clients = site.clients.map((c) => `<span>${esc(c)}</span><b></b>`).join('');
-  const set = (hidden) => `<div class="marquee-set"${hidden ? ' aria-hidden="true"' : ''}><span class="mono muted">Selected clients</span>${clients}</div>`;
+  const set = (hidden) => `<div class="marquee-set"${hidden ? ' aria-hidden="true"' : ''}><span class="mono muted">${esc(L.clients)}</span>${clients}</div>`;
+  const clock = (tz, city) => `<div class="clock" data-tz="${tz}"><span class="mono muted">${esc(city)}</span><span class="time"><span class="h">--</span><span class="colon">:</span><span class="m">--</span></span></div>`;
+  const step = (n, h, p) => `<div class="grid12 step"><span class="mono muted s3">${esc(L.apStep)} ${n}</span><h3 class="mid-h s4">${esc(h)}</h3><p class="s5">${esc(p)}</p></div>`;
+  const pillar = (n, h, p) => `<div class="s4 pillar reveal"><span class="mono n">${n}</span><h3 class="mid-h">${esc(h)}</h3><p>${esc(p)}</p></div>`;
 
-  return `${head({ title: 'MASAKRA — Brand design & strategy', description: site.description, root, canonical: site.url + '/' })}
-${header(root, true)}
+  return `${head({ title: L.title, description: site.description, root, page })}
+${header(root, base, true, page)}
 <main id="main">
 <section id="top" class="wrap hero">
 <h1 class="hero-h">
-<span class="rise d2" style="display:block">Fewer elements.</span>
-<span class="rise d3 soft" style="display:block">More weight<span class="sq pop" aria-hidden="true"></span></span>
+<span class="rise d2" style="display:block">${esc(L.heroL1)}</span>
+<span class="rise d3 soft" style="display:block">${esc(L.heroL2)}<span class="sq pop" aria-hidden="true"></span></span>
 </h1>
 <div class="grid12 hero-foot rise d4">
-<p class="s6">I'm Miroslav Švec — a one-person brand studio. I build identity systems, packaging and merch for brands that want to stand for something, and for agencies that need a senior partner without the overhead.</p>
+<p class="s6">${esc(L.heroP)}</p>
 <div class="s6 hero-cta">
-<a class="btn" href="#work">See selected work <span class="arrow" aria-hidden="true">→</span></a>
-<a class="mark" href="#agencies">Working with agencies</a>
+<a class="btn" href="#work">${esc(L.heroCta)} <span class="arrow" aria-hidden="true">→</span></a>
+<a class="mark" href="#agencies">${esc(L.heroAgencies)}</a>
 </div>
 </div>
 </section>
 
-<section class="marquee rise d5" aria-label="Selected clients"><div class="marquee-track">${set(false)}${set(true)}</div></section>
+<section class="marquee rise d5" aria-label="${esc(L.clients)}"><div class="marquee-track">${set(false)}${set(true)}</div></section>
 
 <section class="wrap section">
 <div class="grid12">
-<span class="mono muted s3 label-col">(01) Position</span>
-<p class="big-h s9 reveal">I don't make pretty pictures. I build brands that hold together <span class="soft">— strategy, system, and every touchpoint after the logo.</span></p>
+<span class="mono muted s3 label-col">${esc(L.posLabel)}</span>
+<p class="big-h s9 reveal">${L.posText}</p>
 </div>
 </section>
 
 <section id="work" class="wrap" style="padding-bottom:72px">
-<div class="sec-head stack-m"><span class="mono">(02) Selected work</span><span class="mono muted">Identity · Packaging · Merch</span></div>
+<div class="sec-head stack-m"><span class="mono">${esc(L.workLabel)}</span><span class="mono muted">${esc(L.workCats)}</span></div>
 <div class="grid12 work-grid">
 ${cards}
 </div>
@@ -200,51 +247,51 @@ ${rows ? `<div class="idx">\n${rows}\n</div>` : ''}
 <section id="agencies" class="dark agencies">
 <div class="wrap section">
 <div class="grid12" style="margin-bottom:96px">
-<span class="mono muted s3 label-col">(03) For agencies</span>
+<span class="mono muted s3 label-col">${esc(L.agLabel)}</span>
 <div class="s9">
-<h2 class="big-h reveal">Your senior brand designer in Europe<span class="sq" aria-hidden="true"></span></h2>
-<p class="lead">For studios and agencies in the US that need identity and packaging work done at a senior level — without hiring for it.</p>
+<h2 class="big-h reveal">${esc(L.agTitle)}<span class="sq" aria-hidden="true"></span></h2>
+<p class="lead">${esc(L.agLead)}</p>
 </div>
 </div>
 <div class="grid12 pillars">
-<div class="s4 pillar reveal"><span class="mono n">01</span><h3 class="mid-h">Direct line.</h3><p>No account managers, no handoffs. You brief the person who designs.</p></div>
-<div class="s4 pillar reveal"><span class="mono n">02</span><h3 class="mid-h">Your night, my day.</h3><p>Six to nine hours ahead of US time. Send feedback in the evening, wake up to revisions.</p></div>
-<div class="s4 pillar reveal"><span class="mono n">03</span><h3 class="mid-h">Built for production.</h3><p>10+ years of packaging and event work under global beauty brand guidelines. Files that print right the first time.</p></div>
+${pillar('01', L.ag1h, L.ag1)}
+${pillar('02', L.ag2h, L.ag2)}
+${pillar('03', L.ag3h, L.ag3)}
 </div>
 <div class="clocks">
 <div class="clocks-set">
-<div class="clock" data-tz="Europe/Bratislava"><span class="mono muted">Prešov, SK</span><span class="time"><span class="h">--</span><span class="colon">:</span><span class="m">--</span></span></div>
-<div class="clock" data-tz="America/New_York"><span class="mono muted">New York</span><span class="time"><span class="h">--</span><span class="colon">:</span><span class="m">--</span></span></div>
-<div class="clock" data-tz="America/Los_Angeles"><span class="mono muted">Los Angeles</span><span class="time"><span class="h">--</span><span class="colon">:</span><span class="m">--</span></span></div>
+${clock('Europe/Bratislava', L.agCity)}
+${clock('America/New_York', 'New York')}
+${clock('America/Los_Angeles', 'Los Angeles')}
 </div>
-<a class="link-dark" href="#contact">Book an intro call →</a>
+<a class="link-dark" href="#contact">${esc(L.agCta)}</a>
 </div>
 </div>
 </section>
 
 <section id="approach" class="wrap section" style="padding-bottom:120px">
 <div class="grid12" style="margin-bottom:80px">
-<span class="mono muted s3 label-col">(04) Approach</span>
-<h2 class="big-h s9 reveal">Strategy first. Then the system. <span class="soft">Then the logo.</span></h2>
+<span class="mono muted s3 label-col">${esc(L.apLabel)}</span>
+<h2 class="big-h s9 reveal">${L.apTitle}</h2>
 </div>
 <div class="steps">
-<div class="grid12 step"><span class="mono muted s3">Step 01</span><h3 class="mid-h s4">Position</h3><p class="s5">What the brand stands for — and what it refuses to be. Market, audience, the one thing worth saying.</p></div>
-<div class="grid12 step"><span class="mono muted s3">Step 02</span><h3 class="mid-h s4">System</h3><p class="s5">Logo, type, color, pattern and the rules between them. Every element has a place and a reason.</p></div>
-<div class="grid12 step"><span class="mono muted s3">Step 03</span><h3 class="mid-h s4">Deploy</h3><p class="s5">Packaging, apparel, campaigns, digital. Down to the fabric, the print method and how it feels in the hand.</p></div>
+${step('01', L.ap1h, L.ap1)}
+${step('02', L.ap2h, L.ap2)}
+${step('03', L.ap3h, L.ap3)}
 </div>
 </section>
 
 <section class="wrap" style="padding-bottom:168px">
 <div class="grid12" style="row-gap:48px">
-<span class="mono muted s3" style="padding-top:8px">(05) Services</span>
-<div class="s5 services"><span>Brand identity systems</span><span>Packaging &amp; PR boxes</span><span>Merch, apparel &amp; fightwear</span><span>Campaign visuals</span></div>
-<div class="s4 price"><span class="mono muted">Engagements from</span><span class="v">${txt(site.startingPrice)}</span><span class="n">A few projects at a time. Fixed scope, fixed price.</span></div>
+<span class="mono muted s3" style="padding-top:8px">${esc(L.svLabel)}</span>
+<div class="s5 services">${L.svItems.map((x) => `<span>${esc(x)}</span>`).join('')}</div>
+<div class="s4 price"><span class="mono muted">${esc(L.svFrom)}</span><span class="v">${txt(site.startingPrice)}</span><span class="n">${esc(L.svNote)}</span></div>
 </div>
 </section>
 
 <section class="wrap" style="padding-bottom:168px">
 <figure class="grid12 quote">
-<span class="mono muted s3">(06) Word</span>
+<span class="mono muted s3">${esc(L.quoteLabel)}</span>
 <div class="s9">
 <blockquote class="mid-h">“${txt(site.quote.text)}”</blockquote>
 <figcaption class="mono muted" style="margin-top:32px">${txt(site.quote.name)} — ${txt(site.quote.role)}</figcaption>
@@ -252,35 +299,38 @@ ${rows ? `<div class="idx">\n${rows}\n</div>` : ''}
 </figure>
 </section>
 </main>
-${contactAndFooter(root)}`;
+${contactAndFooter()}`;
 }
 
 function projectPage(p, next) {
-  const root = '../';
+  const root = LANGS[LANG] ? '../../' : '../';
+  const base = '../';
+  const page = `work/${p.slug}.html`;
   const secs = sections(p.body);
   const meta = [
-    ['Client', p.client], ['Year', p.year], ['Scope', (p.scope || []).join(', ')], ['Industry', p.industry]
+    [L.csClient, p.client], [L.csYear, p.year], [L.csScope, (p.scope || []).join(', ')], [L.csIndustry, p.industry]
   ].filter(([, v]) => v);
-  const cover = p.cover && p.cover.src ? media({ ...p.cover, src: `${p.slug}/${p.cover.src}`, ratio: p.cover.ratio || '16-9' }, '', '', '16-9')
+  const img = `${root}work/${p.slug}/`;
+  const cover = p.cover && p.cover.src ? media({ ...p.cover, src: `${img}${p.cover.src}`, ratio: p.cover.ratio || '16-9' }, '', '', '16-9')
     : media(null, '', `Cover · ${p.cover?.alt || p.title}`, '16-9');
   const gallery = (p.gallery || []).map((g) => {
     const span = g.span || 12;
     const pos = g.start ? ` style="grid-column:${g.start} / span ${span}"` : '';
-    const img = g.src ? { ...g, src: `${p.slug}/${g.src}` } : g;
-    return `<figure class="s${span}${g.start ? ' at' : ''} reveal"${pos}>${natural(img, '')}${g.caption ? `<figcaption class="mono muted">${txt(g.caption)}</figcaption>` : ''}</figure>`;
+    const im = g.src ? { ...g, src: `${img}${g.src}` } : g;
+    return `<figure class="s${span}${g.start ? ' at' : ''} reveal"${pos}>${natural(im, '')}${g.caption ? `<figcaption class="mono muted">${txt(g.caption)}</figcaption>` : ''}</figure>`;
   }).join('\n');
   const desc = (p.summary || site.description).replace(/\[[^\]]*\]/g, '').trim() || site.description;
 
-  return `${head({ title: `${p.title} — MASAKRA`, description: desc, root, canonical: `${site.url}/work/${p.slug}.html` })}
-${header(root, false)}
+  return `${head({ title: `${p.title} — MASAKRA`, description: desc, root, page })}
+${header(root, base, false, page)}
 <main id="main">
 <section class="wrap cs-hero" id="top">
-<a class="mark mono cs-back rise d1" href="${root}index.html#work">← All work</a>
-<div class="rise d1"><span class="mono muted">Case study ${p.num} · ${txt(p.category || '')}</span></div>
+<a class="mark mono cs-back rise d1" href="${base}index.html#work">${esc(L.csBack)}</a>
+<div class="rise d1"><span class="mono muted">${esc(L.csCase)} ${p.num} · ${txt(p.category || '')}</span></div>
 <h1 class="cs-title rise d2">${txt(p.title)}<span class="sq pop" aria-hidden="true"></span></h1>
 ${p.summary ? `<p class="cs-summary rise d3">${txt(p.summary)}</p>` : ''}
 <div class="cs-meta grid12 rise d4">
-${meta.map(([k, v]) => `<div class="item s3"><span class="mono muted">${k}</span><span class="sg" style="font-size:20px;font-weight:500;letter-spacing:-.01em;line-height:1.3">${txt(v)}</span></div>`).join('\n')}
+${meta.map(([k, v]) => `<div class="item s3"><span class="mono muted">${esc(k)}</span><span class="sg" style="font-size:20px;font-weight:500;letter-spacing:-.01em;line-height:1.3">${txt(v)}</span></div>`).join('\n')}
 </div>
 </section>
 <div class="wrap cs-cover rise d5">${cover}</div>
@@ -289,17 +339,17 @@ ${secs.map((s) => `<div class="grid12 cs-sec reveal"><h2 class="mono s3">${txt(s
 </section>
 ${gallery ? `<section class="wrap"><div class="grid12 gallery">\n${gallery}\n</div></section>` : ''}
 <section class="wrap">
-<a class="next" href="${next.slug}.html"><span class="mono muted">Next project</span><br><span class="t">${txt(next.title)} <span aria-hidden="true">→</span></span></a>
+<a class="next" href="${next.slug}.html"><span class="mono muted">${esc(L.csNext)}</span><br><span class="t">${txt(next.title)} <span aria-hidden="true">→</span></span></a>
 </section>
 </main>
-${contactAndFooter(root)}`;
+${contactAndFooter()}`;
 }
 
 function notFound() {
   // 404 lives at the site root on GitHub Pages; absolute paths so it works at any URL depth.
   const root = '/';
-  return `${head({ title: 'Not found — MASAKRA', description: site.description, root, canonical: site.url + '/' })}
-${header(root, false).replace(/href="\/index.html#/g, 'href="/#')}
+  return `${head({ title: 'Not found — MASAKRA', description: site.description, root, page: 'index.html' })}
+${header(root, root, false, 'index.html').replace(/href="\/index.html#/g, 'href="/#')}
 <main id="main" class="wrap section">
 <span class="mono muted">404</span>
 <h1 class="hero-h" style="margin-top:32px">Nothing here<span class="sq" aria-hidden="true"></span></h1>
@@ -316,26 +366,34 @@ function redirect(to) {
 rmrf(OUT);
 const projects = loadProjects();
 copyDir(path.join(SRC, 'assets'), path.join(OUT, 'assets'));
-write('index.html', homePage(projects));
-projects.forEach((p, i) => {
-  const next = projects[(i + 1) % projects.length];
-  write(`work/${p.slug}.html`, projectPage(p, next));
-  const imgDir = path.join(SRC, 'projects', p.slug);
-  copyDir(imgDir, path.join(OUT, 'work', p.slug), (f) => /\.(webp|jpe?g|png|gif|avif|svg|mp4)$/i.test(f));
+projects.forEach((p) => {
+  copyDir(path.join(SRC, 'projects', p.slug), path.join(OUT, 'work', p.slug), (f) => /\.(webp|jpe?g|png|gif|avif|svg|mp4)$/i.test(f));
 });
+const missing = [];
+for (const [lang, prefix] of Object.entries(LANGS)) {
+  setLang(lang);
+  const list = projects.map(loc);
+  write(`${prefix}index.html`, homePage(list));
+  list.forEach((p, i) => write(`${prefix}work/${p.slug}.html`, projectPage(p, list[(i + 1) % list.length])));
+  if (lang !== 'en') projects.filter((p) => !p.i18n[lang]).forEach((p) => missing.push(`${lang}: ${p.slug}`));
+}
+setLang('en');
 write('404.html', notFound());
 
-// Old WordPress URLs → new pages, so existing links keep working.
+// Old WordPress URLs → new pages, so existing links keep working. Never overwrite a real page.
 const legacy = JSON.parse(fs.readFileSync(path.join(SRC, 'redirects.json'), 'utf8'));
 for (const [from, to] of Object.entries(legacy)) {
-  const target = to.startsWith('work/') && !projects.find((p) => `work/${p.slug}.html` === to) ? '' : to;
-  write(path.join(from, 'index.html'), redirect(target));
+  const file = path.join(from, 'index.html');
+  if (fs.existsSync(path.join(OUT, file))) continue;
+  const target = to.endsWith('.html') && !fs.existsSync(path.join(OUT, to)) ? '' : to;
+  write(file, redirect(target));
 }
 
-const urls = ['', ...projects.map((p) => `work/${p.slug}.html`)];
+const urls = Object.values(LANGS).flatMap((pre) => ['', ...projects.map((p) => `work/${p.slug}.html`)].map((u) => pre + u));
 write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((u) => `<url><loc>${site.url}/${u}</loc></url>`).join('\n')}\n</urlset>\n`);
 write('robots.txt', `User-agent: *\nAllow: /\nSitemap: ${site.url}/sitemap.xml\n`);
 write('.nojekyll', '');
 if (fs.existsSync(path.join(SRC, 'CNAME'))) fs.copyFileSync(path.join(SRC, 'CNAME'), path.join(OUT, 'CNAME'));
 
-console.log(`Built ${projects.length} projects${PROD ? ' (production: drafts left out)' : ' (preview: drafts included)'} → dist/`);
+console.log(`Built ${projects.length} projects × ${Object.keys(LANGS).length} languages${PROD ? ' (production: drafts left out)' : ' (preview: drafts included)'} → dist/`);
+if (missing.length) console.log(`No translation yet (English text shown): ${missing.join(', ')}`);

@@ -15,7 +15,25 @@
     "role": "[Rola, firma]"
   },
   "clients": [
-    "L'Oréal Paris", "Lancôme", "Hugo Boss", "Maybelline New York", "NYX Professional Makeup",
-    "Garnier", "La Roche-Posay", "Hell Energy", "Office Shoes", "Rytmus"
-  ]
+    "L'Oréal Paris",
+    "Lancôme",
+    "Hugo Boss",
+    "Maybelline New York",
+    "NYX Professional Makeup",
+    "Garnier",
+    "La Roche-Posay",
+    "Hell Energy",
+    "Office Shoes",
+    "Rytmus"
+  ],
+  "sk": {
+    "description": "MASAKRA — nezávislé štúdio brand dizajnu a stratégie Miroslava Švec. Vizuálne identity, packaging a merch pre značky aj agentúry.",
+    "location": "Prešov, Slovensko",
+    "startingPrice": "[doplň: cena od, napr. 2 000 €]",
+    "quote": {
+      "text": "[doplň: citát klienta po slovensky]",
+      "name": "[Meno]",
+      "role": "[Rola, firma]"
+    }
+  }
 }

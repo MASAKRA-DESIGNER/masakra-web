@@ -55,6 +55,11 @@ a{color:inherit}
 .logo svg{width:136px;height:auto}
 .nav{display:flex;gap:32px;align-items:center}
 .nav a.mark{font-size:15px}
+.lang{display:flex;align-items:center;gap:6px;color:var(--stone)}
+.lang a{text-decoration:none;padding:6px 2px;transition:color .2s}
+.lang a:hover{color:var(--black)}
+.lang [aria-current]{color:var(--black)}
+.lang .sep{opacity:.4}
 
 /* hero */
 .hero{padding-top:120px;padding-bottom:72px}
@@ -188,6 +193,7 @@ a{color:inherit}
   .wrap{padding:0 20px}
   .s3,.s4,.s5,.s6,.s7,.s8,.s9{grid-column:1/-1}
   .hide-m{display:none}
+  .nav{gap:16px}
   .stack-m{flex-direction:column;align-items:flex-start}
   .section{padding-top:96px;padding-bottom:96px}
   .work-card.offset{margin-top:0}
@@ -205,6 +211,12 @@ a{color:inherit}
   .cs-meta .item{grid-column:span 6}
   .gallery figure.at{grid-column:1/-1 !important}
   .gallery .s4{grid-column:span 6}
+}
+@media (max-width:420px){
+  .site-header{gap:12px}
+  .logo svg{width:112px}
+  .btn.sm{padding:0 14px}
+  .btn.sm .arrow{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
