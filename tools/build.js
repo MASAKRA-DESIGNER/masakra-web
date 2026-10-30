@@ -102,8 +102,16 @@ function media(img, prefix, label, ratio) {
   }
   return `<div class="media ${r}"><div class="ph"><span class="mono">${txt(label || img?.alt || 'Image')}</span></div></div>`;
 }
+function video(v, prefix, ratio, cls = '') {
+  // Muted looping clip. Loaded and played only while on screen (assets/js/main.js); the poster shows until then.
+  const r = ratio ? ` r-${ratio}` : '';
+  const poster = v.poster ? ` poster="${prefix}${esc(v.poster)}"` : '';
+  return `<div class="media vid${r}${cls}"><video muted loop playsinline preload="none"${poster} data-src="${prefix}${esc(v.video)}" aria-label="${esc(v.alt || '')}"></video></div>`;
+}
 function natural(img, prefix) {
-  // Gallery image at its own proportions (no crop).
+  // Gallery item: a video loop, a cropped image (ratio set) or an image at its own proportions.
+  if (img.video) return video(img, prefix, img.ratio || '1-1');
+  if (img.src && img.ratio) return `<div class="media r-${img.ratio}"><img src="${prefix}${esc(img.src)}" alt="${esc(img.alt || '')}" loading="lazy" decoding="async"${img.pos ? ` style="object-position:${esc(img.pos)}"` : ''}></div>`;
   if (!img.src) return media(img, prefix, img.alt, img.ratio || '16-9');
   const wh = img.w && img.h ? ` width="${img.w}" height="${img.h}"` : '';
   return `<div class="media natural"><img src="${prefix}${esc(img.src)}" alt="${esc(img.alt || '')}"${wh} loading="lazy" decoding="async"></div>`;
@@ -198,7 +206,7 @@ function homePage(projects) {
     const ratio = pt.span === 's7' ? '4-3' : '4-5';
     const cover = p.cover && p.cover.src ? { ...p.cover, src: `work/${p.slug}/${p.cover.src}` } : null;
     return `<a class="work-card ${pt.span}${pt.off ? ' offset' : ''} reveal" href="${base}work/${p.slug}.html">
-${media(cover ? { ...cover, ratio: cover.ratio || ratio } : null, root, `Image · ${p.cover?.alt || p.title}`, ratio)}
+${media(cover ? { ...cover, ratio: cover.ratio || ratio } : null, root, `Image · ${p.cover?.alt || p.title}`, ratio).replace(/<\/div>$/, p.cover && p.cover.video ? `<video class="hover-vid" muted loop playsinline preload="none" data-src="${root}work/${p.slug}/${esc(p.cover.video)}" aria-hidden="true"></video></div>` : '</div>')}
 <div class="card-meta"><div class="card-title"><span class="mono muted">${p.num}</span><span class="t">${txt(p.title)}</span></div>
 <div class="card-tag"><span class="mono muted">${txt(p.tag || p.category)}</span>${arrowNE}</div></div>
 </a>`;
@@ -311,12 +319,19 @@ function projectPage(p, next) {
     [L.csClient, p.client], [L.csYear, p.year], [L.csScope, (p.scope || []).join(', ')], [L.csIndustry, p.industry]
   ].filter(([, v]) => v);
   const img = `${root}work/${p.slug}/`;
+  const film = p.hero && p.hero.video
+    ? `<div class="cs-film"><video autoplay muted loop playsinline preload="auto" poster="${img}${esc(p.hero.poster || '')}" src="${img}${esc(p.hero.video)}" aria-label="${esc(p.hero.alt || p.title)}"></video></div>` : '';
+  const band = p.brand ? ` band" style="--b-bg:${esc(p.brand.bg)};--b-fg:${esc(p.brand.fg || '#000')}` : '';
+  const results = (p.results || []).length
+    ? `<section class="wrap cs-results"><div class="grid12"><h2 class="mono muted s3">${esc(L.csResults)}</h2><div class="s9 results">${p.results.map((r) => `<div class="res reveal"><span class="v">${txt(r.value)}</span><span class="mono muted">${txt(r.label)}</span></div>`).join('')}</div></div></section>` : '';
+  const quote = p.quote && p.quote.text
+    ? `<section class="wrap cs-quote"><figure class="grid12 quote"><span class="mono muted s3">${esc(L.quoteLabel.replace(/^\(\d+\)\s*/, ''))}</span><div class="s9"><blockquote class="mid-h">“${txt(p.quote.text)}”</blockquote><figcaption class="mono muted" style="margin-top:32px">${txt(p.quote.name)}${p.quote.role ? ` — ${txt(p.quote.role)}` : ''}</figcaption></div></figure></section>` : '';
   const cover = p.cover && p.cover.src ? media({ ...p.cover, src: `${img}${p.cover.src}`, ratio: p.cover.ratio || '16-9' }, '', '', '16-9')
     : media(null, '', `Cover · ${p.cover?.alt || p.title}`, '16-9');
   const gallery = (p.gallery || []).map((g) => {
     const span = g.span || 12;
     const pos = g.start ? ` style="grid-column:${g.start} / span ${span}"` : '';
-    const im = g.src ? { ...g, src: `${img}${g.src}` } : g;
+    const im = g.video ? { ...g, video: `${img}${g.video}`, poster: g.poster ? `${img}${g.poster}` : '' } : g.src ? { ...g, src: `${img}${g.src}` } : g;
     return `<figure class="s${span}${g.start ? ' at' : ''} reveal"${pos}>${natural(im, '')}${g.caption ? `<figcaption class="mono muted">${txt(g.caption)}</figcaption>` : ''}</figure>`;
   }).join('\n');
   const desc = (p.summary || site.description).replace(/\[[^\]]*\]/g, '').trim() || site.description;
@@ -324,7 +339,8 @@ function projectPage(p, next) {
   return `${head({ title: `${p.title} — MASAKRA`, description: desc, root, page })}
 ${header(root, base, false, page)}
 <main id="main">
-<section class="wrap cs-hero" id="top">
+${film}
+<section class="cs-hero${band}" id="top"><div class="wrap">
 <a class="mark mono cs-back rise d1" href="${base}index.html#work">${esc(L.csBack)}</a>
 <div class="rise d1"><span class="mono muted">${esc(L.csCase)} ${p.num} · ${txt(p.category || '')}</span></div>
 <h1 class="cs-title rise d2">${txt(p.title)}<span class="sq pop" aria-hidden="true"></span></h1>
@@ -332,12 +348,14 @@ ${p.summary ? `<p class="cs-summary rise d3">${txt(p.summary)}</p>` : ''}
 <div class="cs-meta grid12 rise d4">
 ${meta.map(([k, v]) => `<div class="item s3"><span class="mono muted">${esc(k)}</span><span class="sg" style="font-size:20px;font-weight:500;letter-spacing:-.01em;line-height:1.3">${txt(v)}</span></div>`).join('\n')}
 </div>
-</section>
-<div class="wrap cs-cover rise d5">${cover}</div>
+</div></section>
+${film ? '' : `<div class="wrap cs-cover rise d5">${cover}</div>`}
 <section class="wrap cs-body">
 ${secs.map((s) => `<div class="grid12 cs-sec reveal"><h2 class="mono s3">${txt(s.title)}</h2><div class="content s9">${s.html}</div></div>`).join('\n')}
 </section>
 ${gallery ? `<section class="wrap"><div class="grid12 gallery">\n${gallery}\n</div></section>` : ''}
+${results}
+${quote}
 <section class="wrap">
 <a class="next" href="${next.slug}.html"><span class="mono muted">${esc(L.csNext)}</span><br><span class="t">${txt(next.title)} <span aria-hidden="true">→</span></span></a>
 </section>

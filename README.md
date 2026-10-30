@@ -15,6 +15,14 @@ Portfólio MASAKRA — statický web, ktorý sa skladá z jednoduchých textový
 - Slovenská verzia projektu je v `src/projects/<nazov>/index.sk.md`. Stačí v nej uviesť to, čo sa prekladá (category, tag, industry, scope, summary, cover.alt) a text pod čiarou. Obrázky a ostatné údaje sa berú z anglického `index.md`.
 - Ak projekt slovenský súbor nemá, na /sk/ sa ukáže anglický text (build to vypíše).
 
+## Videá a animácie v projekte
+- Video daj do priečinka projektu (`.mp4`, H.264, bez zvuku, ideálne do 3 MB) a k nemu obrázok náhľadu (`.webp`).
+- `hero:` (video, poster, alt) — film cez celú šírku hore na stránke projektu, nahrádza cover.
+- `brand:` (bg, fg) — úvodný blok s názvom projektu vo farbe klienta.
+- V `gallery` môže byť položka `video:` + `poster:` (štvorcová slučka, hrá len keď je na obrazovke). Obrázky s `ratio: 1-1` alebo `4-5` sa orežú do rovnakého formátu, takže dvojice sedia.
+- `cover.video` — klip, ktorý sa na homepage pustí pri prejdení myšou po projekte.
+- `results:` (value, label) — výsledky v číslach pod galériou.
+
 ## Nový projekt
 1. Skopíruj priečinok niektorého projektu a premenuj ho (malé písmená, pomlčky).
 2. Uprav údaje a text v `index.md` (anglicky) a v `index.sk.md` (slovensky), pridaj fotky a doplň `src:` pri `cover` a v `gallery`.

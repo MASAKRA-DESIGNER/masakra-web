@@ -11,20 +11,16 @@
     "navApproach": "Approach",
     "navCta": "Start a project",
     "langLabel": "Language",
-
     "heroL1": "Fewer elements.",
     "heroL2": "More weight",
     "heroP": "I'm Miroslav Švec — a one-person brand studio. I build identity systems, packaging and merch for brands that want to stand for something, and for agencies that need a senior partner without the overhead.",
     "heroCta": "See selected work",
     "heroAgencies": "Working with agencies",
     "clients": "Selected clients",
-
     "posLabel": "(01) Position",
     "posText": "I don't make pretty pictures. I build brands that hold together <span class=\"soft\">— strategy, system, and every touchpoint after the logo.</span>",
-
     "workLabel": "(02) Selected work",
     "workCats": "Identity · Packaging · Merch",
-
     "agLabel": "(03) For agencies",
     "agTitle": "Your senior brand designer in Europe",
     "agLead": "For studios and agencies in the US that need identity and packaging work done at a senior level — without hiring for it.",
@@ -36,7 +32,6 @@
     "ag3": "10+ years of packaging and event work under global beauty brand guidelines. Files that print right the first time.",
     "agCity": "Prešov, SK",
     "agCta": "Book an intro call →",
-
     "apLabel": "(04) Approach",
     "apTitle": "Strategy first. Then the system. <span class=\"soft\">Then the logo.</span>",
     "apStep": "Step",
@@ -46,27 +41,29 @@
     "ap2": "Logo, type, color, pattern and the rules between them. Every element has a place and a reason.",
     "ap3h": "Deploy",
     "ap3": "Packaging, apparel, campaigns, digital. Down to the fabric, the print method and how it feels in the hand.",
-
     "svLabel": "(05) Services",
-    "svItems": ["Brand identity systems", "Packaging & PR boxes", "Merch, apparel & fightwear", "Campaign visuals"],
+    "svItems": [
+      "Brand identity systems",
+      "Packaging & PR boxes",
+      "Merch, apparel & fightwear",
+      "Campaign visuals"
+    ],
     "svFrom": "Engagements from",
     "svNote": "A few projects at a time. Fixed scope, fixed price.",
     "quoteLabel": "(06) Word",
-
     "contactLabel": "Contact",
     "contactTitle": "Have a brand that should <span class=\"soft\">stand for something?</span>",
     "contactNote": "Send a few lines about the brand, the timeline and the budget. You'll hear back within one business day.",
     "backTop": "Back to top ↑",
-
     "csBack": "← All work",
     "csCase": "Case study",
     "csClient": "Client",
     "csYear": "Year",
     "csScope": "Scope",
     "csIndustry": "Industry",
-    "csNext": "Next project"
+    "csNext": "Next project",
+    "csResults": "Outcome"
   },
-
   "sk": {
     "htmlLang": "sk",
     "ogLocale": "sk_SK",
@@ -79,20 +76,16 @@
     "navApproach": "Prístup",
     "navCta": "Začať projekt",
     "langLabel": "Jazyk",
-
     "heroL1": "Menej prvkov.",
     "heroL2": "Viac váhy",
     "heroP": "Som Miroslav Švec — brand štúdio v jednej osobe. Tvorím vizuálne identity, packaging a merch pre značky, ktoré chcú za niečím stáť, a pre agentúry, ktoré potrebujú seniorného partnera bez zbytočnej réžie.",
     "heroCta": "Pozrieť vybrané práce",
     "heroAgencies": "Spolupráca s agentúrami",
     "clients": "Vybraní klienti",
-
     "posLabel": "(01) Pozícia",
     "posText": "Nerobím pekné obrázky. Staviam značky, ktoré držia pokope <span class=\"soft\">— stratégia, systém a každý kontaktný bod, ktorý príde po logu.</span>",
-
     "workLabel": "(02) Vybrané práce",
     "workCats": "Identita · Packaging · Merch",
-
     "agLabel": "(03) Pre agentúry",
     "agTitle": "Seniorný brand dizajnér pre vašu agentúru",
     "agLead": "Pre štúdiá a agentúry na Slovensku aj v zahraničí, ktoré potrebujú identitu a packaging na seniornej úrovni — bez toho, aby museli niekoho zamestnať.",
@@ -104,7 +97,6 @@
     "ag3": "Viac ako 10 rokov packagingu a eventov podľa manuálov globálnych beauty značiek. Podklady, ktoré sa vytlačia správne na prvýkrát.",
     "agCity": "Prešov, SK",
     "agCta": "Dohodnúť úvodný hovor →",
-
     "apLabel": "(04) Prístup",
     "apTitle": "Najprv stratégia. Potom systém. <span class=\"soft\">Až potom logo.</span>",
     "apStep": "Krok",
@@ -114,24 +106,27 @@
     "ap2": "Logo, písmo, farby, vzor a pravidlá medzi nimi. Každý prvok má svoje miesto a dôvod.",
     "ap3h": "Nasadenie",
     "ap3": "Packaging, oblečenie, kampane, digitál. Až po materiál, technológiu potlače a to, ako to sedí v ruke.",
-
     "svLabel": "(05) Služby",
-    "svItems": ["Vizuálne identity a brand systémy", "Packaging a PR boxy", "Merch, oblečenie a fightwear", "Kampaňové vizuály"],
+    "svItems": [
+      "Vizuálne identity a brand systémy",
+      "Packaging a PR boxy",
+      "Merch, oblečenie a fightwear",
+      "Kampaňové vizuály"
+    ],
     "svFrom": "Projekty od",
     "svNote": "Len pár projektov naraz. Pevný rozsah, pevná cena.",
     "quoteLabel": "(06) Referencia",
-
     "contactLabel": "Kontakt",
     "contactTitle": "Máte značku, ktorá by mala <span class=\"soft\">za niečím stáť?</span>",
     "contactNote": "Napíšte pár viet o značke, termíne a rozpočte. Odpoviem do jedného pracovného dňa.",
     "backTop": "Späť hore ↑",
-
     "csBack": "← Všetky práce",
     "csCase": "Case study",
     "csClient": "Klient",
     "csYear": "Rok",
     "csScope": "Rozsah",
     "csIndustry": "Odvetvie",
-    "csNext": "Ďalší projekt"
+    "csNext": "Ďalší projekt",
+    "csResults": "Výsledky"
   }
 }
