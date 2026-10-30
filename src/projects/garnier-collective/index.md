@@ -92,12 +92,12 @@ gallery:
   alt: Event sign at dinner
   ratio: 4-5
   span: 6
-- video: v-flip.mp4
-  poster: v-flip.webp
-  alt: Print — invitations, leaflet, boards, plinths
-  span: 6
 - src: p037.webp
   alt: Bottle in use
+  ratio: 1-1
+  span: 6
+- src: p063.webp
+  alt: Garnier products in the garden
   ratio: 1-1
   span: 6
 - src: p058.webp
