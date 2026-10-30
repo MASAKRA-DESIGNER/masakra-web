@@ -60,8 +60,8 @@ gallery:
   span: 6
 - src: p043.webp
   alt: Wheelbarrows of mulch
-  w: 1024
-  h: 683
+  w: 2400
+  h: 1600
   span: 12
 - video: v-badge.mp4
   poster: v-badge.webp
@@ -102,8 +102,8 @@ gallery:
   span: 6
 - src: p058.webp
   alt: Long table under the trees
-  w: 1024
-  h: 683
+  w: 2400
+  h: 1600
   span: 12
 - src: p055.webp
   alt: Table card
@@ -115,8 +115,8 @@ gallery:
   span: 6
 - src: p118.webp
   alt: Dinner at night
-  w: 1024
-  h: 683
+  w: 2400
+  h: 1600
   span: 12
 - src: p112.webp
   alt: Dinner
