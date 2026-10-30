@@ -12,7 +12,7 @@ scope:
 - Signage & plinths
 - Merch
 summary: A volunteer day in nature for influencers from Slovakia and Czechia — planting, mulching and building benches by day, a long table under the trees by night. One striped system carried two languages, two NGO partners and everything in between.
-featured: false
+featured: true
 cover:
   src: 01-cover.webp
   alt: Volunteers with event bags

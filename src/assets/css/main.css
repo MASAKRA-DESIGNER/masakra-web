@@ -84,7 +84,7 @@ a{color:inherit}
 .label-col{padding-top:14px}
 
 /* work grid */
-.work-grid{row-gap:80px;align-items:start}
+.work-grid{column-gap:16px;row-gap:56px;align-items:start}
 .work-card{text-decoration:none;color:var(--black);display:flex;flex-direction:column;gap:18px}
 .work-card.offset{margin-top:160px}
 .media{position:relative;overflow:hidden;background:var(--ph)}

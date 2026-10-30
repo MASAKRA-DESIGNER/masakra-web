@@ -198,15 +198,15 @@ function homePage(projects) {
   const root = LANGS[LANG] ? '../' : '';
   const base = '';
   const page = 'index.html';
-  const featured = projects.filter((p) => p.featured).slice(0, 4);
+  const featured = projects.filter((p) => p.featured).slice(0, 8);
   const rest = projects.filter((p) => !featured.includes(p));
-  const pattern = [{ span: 's7', off: false }, { span: 's5', off: true }, { span: 's5', off: false }, { span: 's7', off: true }];
+  const pattern = [{ span: 's6', off: false }];
   const cards = featured.map((p, i) => {
-    const pt = pattern[i % 4];
-    const ratio = pt.span === 's7' ? '4-3' : '4-5';
+    const pt = pattern[0];
+    const ratio = '4-3';
     const cover = p.cover && p.cover.src ? { ...p.cover, src: `work/${p.slug}/${p.cover.src}` } : null;
     return `<a class="work-card ${pt.span}${pt.off ? ' offset' : ''} reveal" href="${base}work/${p.slug}.html">
-${media(cover ? { ...cover, ratio: cover.ratio || ratio } : null, root, `Image · ${p.cover?.alt || p.title}`, ratio).replace(/<\/div>$/, p.cover && p.cover.video ? `<video class="hover-vid" muted loop playsinline preload="none" data-src="${root}work/${p.slug}/${esc(p.cover.video)}" aria-hidden="true"></video></div>` : '</div>')}
+${media(cover ? { ...cover, ratio } : null, root, `Image · ${p.cover?.alt || p.title}`, ratio).replace(/<\/div>$/, p.cover && p.cover.video ? `<video class="hover-vid" muted loop playsinline preload="none" data-src="${root}work/${p.slug}/${esc(p.cover.video)}" aria-hidden="true"></video></div>` : '</div>')}
 <div class="card-meta"><div class="card-title"><span class="mono muted">${p.num}</span><span class="t">${txt(p.title)}</span></div>
 <div class="card-tag"><span class="mono muted">${txt(p.tag || p.category)}</span>${arrowNE}</div></div>
 </a>`;
@@ -244,12 +244,12 @@ ${header(root, base, true, page)}
 </div>
 </section>
 
-<section id="work" class="wrap" style="padding-bottom:72px">
-<div class="sec-head stack-m"><span class="mono">${esc(L.workLabel)}</span><span class="mono muted">${esc(L.workCats)}</span></div>
-<div class="grid12 work-grid">
+<section id="work" style="padding-bottom:72px">
+<div class="wrap"><div class="sec-head stack-m"><span class="mono">${esc(L.workLabel)}</span><span class="mono muted">${esc(L.workCats)}</span></div></div>
+<div class="wrap wide"><div class="grid12 work-grid">
 ${cards}
-</div>
-${rows ? `<div class="idx">\n${rows}\n</div>` : ''}
+</div></div>
+${rows ? `<div class="wrap"><div class="idx">\n${rows}\n</div></div>` : ''}
 </section>
 
 <section id="agencies" class="dark agencies">
