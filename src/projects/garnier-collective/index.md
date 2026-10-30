@@ -62,12 +62,7 @@ gallery:
   alt: Wheelbarrows of mulch
   w: 1024
   h: 683
-  span: 6
-- src: p004.webp
-  alt: Event bags
-  w: 1024
-  h: 683
-  span: 6
+  span: 12
 - video: v-badge.mp4
   poster: v-badge.webp
   alt: The Greener Never Stops badge on the striped disc
@@ -80,10 +75,15 @@ gallery:
   alt: Tee and bag
   ratio: 1-1
   span: 6
-- src: mk-bottle.webp
-  alt: Bottle
+- src: p004.webp
+  alt: Event bags
   ratio: 1-1
   span: 6
+- src: mk-bottle.webp
+  alt: Bottle
+  w: 1600
+  h: 1200
+  span: 12
 - src: p067.webp
   alt: Garnier plinth
   ratio: 4-5
@@ -104,12 +104,7 @@ gallery:
   alt: Long table under the trees
   w: 1024
   h: 683
-  span: 6
-- src: p118.webp
-  alt: Dinner at night
-  w: 1024
-  h: 683
-  span: 6
+  span: 12
 - src: p055.webp
   alt: Table card
   ratio: 4-5
@@ -118,6 +113,11 @@ gallery:
   alt: Wayfinding
   ratio: 4-5
   span: 6
+- src: p118.webp
+  alt: Dinner at night
+  w: 1024
+  h: 683
+  span: 12
 - src: p112.webp
   alt: Dinner
   ratio: 4-5
