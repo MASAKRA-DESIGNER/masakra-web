@@ -1,6 +1,6 @@
 ---
 title: L'Oréal Group
-order: 1
+order: 4.5
 category: PR packaging & events
 tag: PR packaging · Events
 client: L'Oréal Paris, NYX Professional Makeup, Garnier, Lancôme, Maybelline New York, Essie · Hugo Boss
@@ -12,7 +12,6 @@ scope:
 - Event identity
 - Print
 summary: PR boxes, event worlds and print for global beauty brands in Slovakia and the Czech Republic — built to strict guidelines, made to be opened on camera.
-featured: true
 cover:
   src: 01-cover-nyx-smushy-box.webp
   alt: NYX Smushy PR box
