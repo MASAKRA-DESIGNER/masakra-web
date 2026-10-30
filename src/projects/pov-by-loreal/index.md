@@ -6,6 +6,7 @@ tag: Event · Identity
 client: L'Oréal Paris, Garnier, Mixa, Maybelline New York, NYX Professional Makeup, Essie
 year: '2024'
 industry: Beauty
+agency: AMI Communications
 scope:
 - Event identity
 - Invitations & passes
@@ -132,5 +133,5 @@ L'Oréal invited influencers from Slovakia, Czechia and Hungary to the Grand Hot
 - Towels, cans, pins, beach balls, inflatable rings, bean bags and pillows
 - Games — Dobble, Jenga, giant tic-tac-toe, a shooting range
 
-## Partners
-Developed with AMI Communications. [doplň: tvoja rola, počet hostí]
+## Credits
+Event identity, logo, colour system and every graphic on site — designed and prepared for print by MASAKRA (Miroslav Švec), keeping seven brands in one identity. Event organised and produced by AMI Communications, Bratislava.

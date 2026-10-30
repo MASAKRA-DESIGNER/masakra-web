@@ -6,6 +6,7 @@ tag: PR packaging · Events
 client: L'Oréal Paris, NYX Professional Makeup, Garnier, Lancôme, Maybelline New York, Essie · Hugo Boss
 year: 2023 — 2026
 industry: Beauty & lifestyle
+agency: AMI Communications · WS Czech
 scope:
 - PR boxes
 - Packaging & dielines

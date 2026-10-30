@@ -35,5 +35,5 @@ L'Oréal pozval influencerov zo Slovenska, Česka a Maďarska do Grand Hotela Ke
 - Osušky, plechovky, odznaky, lopty, nafukovacie kolesá, sedacie vaky a vankúše
 - Hry — Dobble, Jenga, obrie piškvorky, strelnica
 
-## Partneri
-V spolupráci s AMI Communications. [doplň: tvoja rola, počet hostí]
+## Kredity
+Identita eventu, logo, farebný systém a všetky grafiky na mieste — navrhol a do tlače pripravil MASAKRA (Miroslav Švec), aby sedem značiek držalo v jednej identite. Event zorganizovala a zrealizovala agentúra AMI Communications, Bratislava.

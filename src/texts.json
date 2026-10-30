@@ -62,7 +62,8 @@
     "csScope": "Scope",
     "csIndustry": "Industry",
     "csNext": "Next project",
-    "csResults": "Outcome"
+    "csResults": "Outcome",
+    "csAgency": "In collaboration with"
   },
   "sk": {
     "htmlLang": "sk",
@@ -127,6 +128,7 @@
     "csScope": "Rozsah",
     "csIndustry": "Odvetvie",
     "csNext": "Ďalší projekt",
-    "csResults": "Výsledky"
+    "csResults": "Výsledky",
+    "csAgency": "V spolupráci s"
   }
 }

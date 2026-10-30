@@ -316,7 +316,7 @@ function projectPage(p, next) {
   const page = `work/${p.slug}.html`;
   const secs = sections(p.body);
   const meta = [
-    [L.csClient, p.client], [L.csYear, p.year], [L.csScope, (p.scope || []).join(', ')], [L.csIndustry, p.industry]
+    [L.csClient, p.client], [L.csAgency, p.agency], [L.csYear, p.year], [L.csScope, (p.scope || []).join(', ')]
   ].filter(([, v]) => v);
   const img = `${root}work/${p.slug}/`;
   const film = p.hero && p.hero.video
