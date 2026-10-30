@@ -68,9 +68,9 @@ gallery:
   w: 1024
   h: 683
   span: 6
-- video: v-merch.mp4
-  poster: v-merch.webp
-  alt: Merch — bottles, cap, bags, pouches
+- video: v-badge.mp4
+  poster: v-badge.webp
+  alt: The Greener Never Stops badge on the striped disc
   span: 6
 - src: p035.webp
   alt: Drawstring bag
