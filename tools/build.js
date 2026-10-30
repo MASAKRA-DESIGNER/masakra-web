@@ -349,11 +349,11 @@ ${p.summary ? `<p class="cs-summary rise d3">${txt(p.summary)}</p>` : ''}
 ${meta.map(([k, v]) => `<div class="item s3"><span class="mono muted">${esc(k)}</span><span class="sg" style="font-size:20px;font-weight:500;letter-spacing:-.01em;line-height:1.3">${txt(v)}</span></div>`).join('\n')}
 </div>
 </div></section>
-${film ? '' : `<div class="wrap cs-cover rise d5">${cover}</div>`}
+${film ? '' : `<div class="wrap wide cs-cover rise d5">${cover}</div>`}
 <section class="wrap cs-body">
 ${secs.map((s) => `<div class="grid12 cs-sec reveal"><h2 class="mono s3">${txt(s.title)}</h2><div class="content s9">${s.html}</div></div>`).join('\n')}
 </section>
-${gallery ? `<section class="wrap"><div class="grid12 gallery">\n${gallery}\n</div></section>` : ''}
+${gallery ? `<section class="wrap wide"><div class="grid12 gallery">\n${gallery}\n</div></section>` : ''}
 ${results}
 ${quote}
 <section class="wrap">

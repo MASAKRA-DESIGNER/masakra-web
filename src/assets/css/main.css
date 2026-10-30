@@ -20,6 +20,7 @@ a{color:inherit}
 .skip:focus{left:8px}
 
 .wrap{max-width:1360px;margin:0 auto;padding:0 40px}
+.wrap.wide{max-width:2400px;padding:0 24px}
 .mono{font-family:'Geist Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:400}
 .sg{font-family:'Space Grotesk',sans-serif}
 .muted{color:var(--stone)}
@@ -184,7 +185,7 @@ a{color:inherit}
 .cs-sec .content li::before{content:'';position:absolute;left:0;top:19px;width:8px;height:8px;background:var(--black)}
 .cs-sec h2{margin:0}
 .todo{background:var(--volt);padding:0 4px;font-family:'Geist Mono',monospace;font-size:.8em}
-.gallery{padding-top:56px;padding-bottom:40px;row-gap:24px}
+.gallery{padding-top:56px;padding-bottom:40px;column-gap:16px;row-gap:16px}
 .gallery figure{margin:0;min-width:0}
 .media.natural{background:var(--ph)}
 .media.natural img{width:100%;height:auto;transition:none}
@@ -208,6 +209,8 @@ a{color:inherit}
 
 @media (max-width:900px){
   .wrap{padding:0 20px}
+  .wrap.wide{padding:0 12px}
+  .gallery{column-gap:12px;row-gap:12px}
   .s3,.s4,.s5,.s6,.s7,.s8,.s9{grid-column:1/-1}
   .hide-m{display:none}
   .nav{gap:16px}
