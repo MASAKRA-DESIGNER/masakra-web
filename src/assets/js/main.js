@@ -49,6 +49,52 @@
     });
   }
 
+  // Header clock (Prešov)
+  var hc = document.querySelector('[data-hclock] .v');
+  function htick() { try { hc.textContent = 'Prešov ' + new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Bratislava', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date()); } catch (e) {} }
+  if (hc) { htick(); setInterval(htick, 20000); }
+
+  // Work filter chips
+  var chips = [].slice.call(document.querySelectorAll('.chip'));
+  var wcards = [].slice.call(document.querySelectorAll('.work-grid .work-card'));
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () {
+      chips.forEach(function (x) { x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); });
+      var f = c.getAttribute('data-f');
+      wcards.forEach(function (card) { card.classList.remove('pending'); card.hidden = !(f === 'all' || (card.getAttribute('data-c') || '').split(' ').indexOf(f) > -1); });
+    });
+  });
+
+  // Custom cursor on work cards + image peek on services (mouse only)
+  var fine = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+  var cur = document.querySelector('.cursor'), peek = document.querySelector('.peek');
+  if (fine && !reduce && (cur || peek)) {
+    window.addEventListener('mousemove', function (e) {
+      if (cur) { cur.style.setProperty('--x', e.clientX + 'px'); cur.style.setProperty('--y', e.clientY + 'px'); }
+      if (peek) { peek.style.setProperty('--x', (e.clientX + 28) + 'px'); peek.style.setProperty('--y', (e.clientY - 180) + 'px'); }
+    });
+    if (cur) wcards.forEach(function (card) {
+      card.addEventListener('mouseenter', function () { cur.classList.add('on'); });
+      card.addEventListener('mouseleave', function () { cur.classList.remove('on'); });
+    });
+    if (peek) {
+      var pimg = peek.querySelector('img');
+      document.querySelectorAll('.svc a').forEach(function (a) {
+        var src = a.getAttribute('data-img'); if (!src) return;
+        a.addEventListener('mouseenter', function () { pimg.src = src; peek.classList.add('on'); });
+        a.addEventListener('mouseleave', function () { peek.classList.remove('on'); });
+      });
+    }
+  }
+  // Touch: play card loops while on screen
+  if (!fine && !reduce && 'IntersectionObserver' in window) {
+    var cio = new IntersectionObserver(function (es) {
+      es.forEach(function (en) { var v = en.target.querySelector('.hover-vid'); if (!v) return;
+        if (en.isIntersecting) { load(v); var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); en.target.classList.add('playing'); } else { v.pause(); } });
+    }, { threshold: 0.5 });
+    wcards.forEach(function (c) { cio.observe(c); });
+  }
+
   // Reveal on scroll: only elements below the first screen start hidden,
   // so the page is complete at rest even without this script.
   if (!('IntersectionObserver' in window)) return;

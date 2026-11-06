@@ -126,6 +126,9 @@ gallery:
   alt: Fire
   ratio: 4-5
   span: 6
+filters:
+- event
+- identity
 ---
 ## Brief
 Garnier's Collective for the Planet brings influencers out of the studio and into nature. In August 2026 two editions took place at the Boutique Hotel Pri Mlyne in Lozorno — one for Slovakia with Nadácia Ekopolis, one for Czechia with Ukliďme Česko. Guests planted and mulched trees, cleared the meadow and built benches, then sat down to a long dinner under the trees.

@@ -64,6 +64,9 @@ gallery:
   w: 1080
   h: 1920
   span: 4
+filters:
+- identity
+- music
 ---
 ## Brief
 A two-day open-air festival in Prešov–Delňa (22–23 August 2025). The visual had to work as a poster, scale to a billboard and carry dozens of band announcements without losing its character.

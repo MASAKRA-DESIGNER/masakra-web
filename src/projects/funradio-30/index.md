@@ -58,6 +58,8 @@ gallery:
   w: 2400
   h: 2132
   span: 6
+filters:
+- merch
 ---
 ## Brief
 A merch collection for the 30th anniversary of Funradio — something listeners would wear, not just collect.

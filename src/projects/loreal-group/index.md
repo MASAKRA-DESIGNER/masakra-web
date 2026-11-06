@@ -83,6 +83,8 @@ gallery:
   w: 2400
   h: 1087
   span: 12
+filters:
+- event
 ---
 ## Brief
 Launch kits, event worlds and printed matter for L'Oréal brands entering the Slovak and Czech market. Every piece follows global brand guidelines to the letter — and still has to feel like an event when it is opened, posted or walked through.

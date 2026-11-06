@@ -119,6 +119,8 @@ gallery:
   w: 2400
   h: 1599
   span: 12
+filters:
+- event
 ---
 ## Brief
 L'Oréal invited influencers from Slovakia, Czechia and Hungary to the Grand Hotel Kempinski in Portorož, 9–11 September 2024. Seven brands, one trip — a boat, a beach club, an olive-farm dinner and a party. The event needed an identity of its own: strong enough to hold seven brand logos without becoming an eighth.

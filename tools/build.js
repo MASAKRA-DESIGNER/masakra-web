@@ -167,8 +167,9 @@ function header(root, base, home, page) {
 <a class="mark hide-m" href="${h}#work">${esc(L.navWork)}</a>
 <a class="mark hide-m" href="${h}#agencies">${esc(L.navAgencies)}</a>
 <a class="mark hide-m" href="${h}#approach">${esc(L.navApproach)}</a>
+<span class="hclock mono muted hide-m" data-hclock><i class="live" aria-hidden="true"></i><span class="v">Prešov --:--</span></span>
 ${langSwitch(root, page)}
-<a class="btn sm" href="${h}#contact">${esc(L.navCta)} <span class="arrow" aria-hidden="true">→</span></a>
+<a class="btn sm pill" href="${h}#contact"><span class="vsq" aria-hidden="true"></span>${esc(L.navCta)}</a>
 </nav>
 </header>`;
 }
@@ -180,6 +181,7 @@ function contactAndFooter() {
 <a class="mail link-dark" href="mailto:${esc(site.email)}">${esc(site.email)} <svg class="arrow" aria-hidden="true" width="40" height="40" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 13L13 5M6 5h7v7"/></svg></a>
 <p class="contact-note">${esc(L.contactNote)}</p>
 </div>
+<div class="wrap wide"><div class="wordmark" aria-hidden="true">${logoWhite}</div></div>
 <footer class="wrap site-footer">
 <span class="mono muted">© ${new Date().getFullYear()} ${esc(site.name)} — ${esc(site.owner)} · ${esc(site.location)}</span>
 <nav aria-label="Social">
@@ -205,47 +207,49 @@ function homePage(projects) {
     const pt = pattern[0];
     const ratio = '4-3';
     const cover = p.cover && p.cover.src ? { ...p.cover, src: `work/${p.slug}/${p.cover.src}` } : null;
-    return `<a class="work-card ${pt.span}${pt.off ? ' offset' : ''} reveal" href="${base}work/${p.slug}.html">
+    return `<a class="work-card ${pt.span}${pt.off ? ' offset' : ''} reveal" data-c="${esc((p.filters || []).join(' '))}" href="${base}work/${p.slug}.html">
 ${media(cover ? { ...cover, ratio } : null, root, `Image · ${p.cover?.alt || p.title}`, ratio).replace(/<\/div>$/, p.cover && p.cover.video ? `<video class="hover-vid" muted loop playsinline preload="none" data-src="${root}work/${p.slug}/${esc(p.cover.video)}" aria-hidden="true"></video></div>` : '</div>')}
-<div class="card-meta"><div class="card-title"><span class="mono muted">${p.num}</span><span class="t">${txt(p.title)}</span></div>
+<div class="card-meta"><div class="card-title"><span class="mono muted">${p.num}</span><span class="t">${txt(p.title)}</span>${p.cover && p.cover.video ? `<span class="badge mono">${esc(L.motion)}</span>` : ''}</div>
 <div class="card-tag"><span class="mono muted">${txt(p.tag || p.category)}</span>${arrowNE}</div></div>
 </a>`;
   }).join('\n');
   const rows = rest.map((p) => `<a class="idx-row" href="${base}work/${p.slug}.html"><span class="l"><span class="mono muted">${p.num}</span><span class="t">${txt(p.title)}</span></span><span class="r"><span class="mono muted">${txt(p.tag || p.category)}</span><span aria-hidden="true">→</span></span></a>`).join('\n');
+  const F = ['event', 'identity', 'music', 'merch'];
+  const count = (f) => featured.filter((p) => (p.filters || []).includes(f)).length;
+  const chips = [`<button class="chip" type="button" data-f="all" aria-pressed="true">${esc(L.fAll)}<sup>${featured.length}</sup></button>`]
+    .concat(F.filter(count).map((f) => `<button class="chip" type="button" data-f="${f}" aria-pressed="false">${esc(L.f[f])}<sup>${count(f)}</sup></button>`)).join('');
+  const svc = L.svItems.map((x, i) => {
+    const pr = projects.find((q) => q.slug === (site.servicesImgs || [])[i]);
+    const im = pr && pr.cover && pr.cover.src ? `${root}work/${pr.slug}/${pr.cover.src}` : '';
+    return `<a href="#work" data-img="${esc(im)}"><span class="name">${esc(x)}</span><span class="tags mono muted">${esc((L.svTags || [])[i] || '')}</span></a>`;
+  }).join('');
   const clients = site.clients.map((c) => `<span>${esc(c)}</span><b></b>`).join('');
   const set = (hidden) => `<div class="marquee-set"${hidden ? ' aria-hidden="true"' : ''}><span class="mono muted">${esc(L.clients)}</span>${clients}</div>`;
   const clock = (tz, city) => `<div class="clock" data-tz="${tz}"><span class="mono muted">${esc(city)}</span><span class="time"><span class="h">--</span><span class="colon">:</span><span class="m">--</span></span></div>`;
-  const step = (n, h, p) => `<div class="grid12 step"><span class="mono muted s3">${esc(L.apStep)} ${n}</span><h3 class="mid-h s4">${esc(h)}</h3><p class="s5">${esc(p)}</p></div>`;
+  const step = (k, h, p) => `<div class="step2 reveal"><span class="mono muted">${esc(k)}</span><h3 class="mid-h">${esc(h)}</h3><p>${esc(p)}</p></div>`;
   const pillar = (n, h, p) => `<div class="s4 pillar reveal"><span class="mono n">${n}</span><h3 class="mid-h">${esc(h)}</h3><p>${esc(p)}</p></div>`;
 
   return `${head({ title: L.title, description: site.description, root, page })}
 ${header(root, base, true, page)}
 <main id="main">
 <section id="top" class="wrap hero">
-<h1 class="hero-h">
-<span class="rise d2" style="display:block">${esc(L.heroL1)}</span>
-<span class="rise d3 soft" style="display:block">${esc(L.heroL2)}<span class="sq pop" aria-hidden="true"></span></span>
-</h1>
+<h1 class="hero-xl"><span class="ln"><span>${esc(L.heroL1)}</span></span><span class="ln"><span class="soft">${esc(L.heroL2)}<span class="sq" aria-hidden="true"></span></span></span></h1>
 <div class="grid12 hero-foot rise d4">
-<p class="s6">${esc(L.heroP)}</p>
-<div class="s6 hero-cta">
-<a class="btn" href="#work">${esc(L.heroCta)} <span class="arrow" aria-hidden="true">→</span></a>
-<a class="mark" href="#agencies">${esc(L.heroAgencies)}</a>
-</div>
+<p class="s5">${esc(L.heroP)}</p>
+<div class="s4 hero-meta mono muted"><span>${esc(L.heroMeta)}</span><a class="mark" href="#agencies">${esc(L.heroAgencies)}</a></div>
+<div class="s3 hero-cta"><a class="btn pill" href="#work">${esc(L.heroCta)} <span aria-hidden="true">↓</span></a></div>
 </div>
 </section>
 
-<section class="marquee rise d5" aria-label="${esc(L.clients)}"><div class="marquee-track">${set(false)}${set(true)}</div></section>
-
-<section class="wrap section">
-<div class="grid12">
-<span class="mono muted s3 label-col">${esc(L.posLabel)}</span>
-<p class="big-h s9 reveal">${L.posText}</p>
-</div>
+<section class="reel rise d5" aria-label="Showreel">
+<video src="${root}assets/media/reel.mp4" poster="${root}assets/media/reel.jpg" autoplay muted loop playsinline></video>
+<span class="reel-tag mono">${esc(L.reelLabel)}</span>
 </section>
+
+<section class="marquee" aria-label="${esc(L.clients)}"><div class="marquee-track">${set(false)}${set(true)}</div></section>
 
 <section id="work" style="padding-bottom:72px">
-<div class="wrap"><div class="sec-head stack-m"><span class="mono">${esc(L.workLabel)}</span><span class="mono muted">${esc(L.workCats)}</span></div></div>
+<div class="wrap"><div class="work-head"><h2 class="big-h">${esc(L.workTitle)}</h2><div class="chips" role="group" aria-label="${esc(L.fLabel)}">${chips}</div></div></div>
 <div class="wrap wide"><div class="grid12 work-grid">
 ${cards}
 </div></div>
@@ -282,19 +286,17 @@ ${clock('America/Los_Angeles', 'Los Angeles')}
 <span class="mono muted s3 label-col">${esc(L.apLabel)}</span>
 <h2 class="big-h s9 reveal">${L.apTitle}</h2>
 </div>
-<div class="steps">
-${step('01', L.ap1h, L.ap1)}
-${step('02', L.ap2h, L.ap2)}
-${step('03', L.ap3h, L.ap3)}
+<div class="steps2">
+${step(L.ap1h, L.ap1t, L.ap1)}
+${step(L.ap2h, L.ap2t, L.ap2)}
+${step(L.ap3h, L.ap3t, L.ap3)}
 </div>
 </section>
 
-<section class="wrap" style="padding-bottom:168px">
-<div class="grid12" style="row-gap:48px">
-<span class="mono muted s3" style="padding-top:8px">${esc(L.svLabel)}</span>
-<div class="s5 services">${L.svItems.map((x) => `<span>${esc(x)}</span>`).join('')}</div>
-<div class="s4 price"><span class="mono muted">${esc(L.svFrom)}</span><span class="v">${txt(site.startingPrice)}</span><span class="n">${esc(L.svNote)}</span></div>
-</div>
+<section id="services" class="wrap" style="padding-bottom:168px">
+<span class="mono muted">${esc(L.svLabel)}</span>
+<div class="svc">${svc}</div>
+<div class="price2"><span class="mono muted">${esc(L.svNote)}</span><span class="mono">${esc(L.svFrom)} ${txt(site.startingPrice)}</span></div>
 </section>
 
 <section class="wrap" style="padding-bottom:168px">
@@ -307,6 +309,8 @@ ${step('03', L.ap3h, L.ap3)}
 </figure>
 </section>
 </main>
+<div class="cursor" aria-hidden="true">${esc(L.view)}</div>
+<div class="peek" aria-hidden="true"><img alt=""></div>
 ${contactAndFooter()}`;
 }
 

@@ -87,6 +87,8 @@ gallery:
   alt: Summer 2026 — tracksuit
   ratio: 1-1
   span: 6
+filters:
+- merch
 ---
 ## Brief
 A new collection that leaves the darker punk look of the previous drop behind. A change of direction, not a refresh.

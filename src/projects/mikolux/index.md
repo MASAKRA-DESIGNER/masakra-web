@@ -52,6 +52,8 @@ gallery:
   w: 2046
   h: 1028
   span: 12
+filters:
+- identity
 ---
 ## Context
 MIKOLUX installs air, water and solar systems. The brand had to look precise and reliable on vans, documents and screens — without the visual noise typical of the sector.

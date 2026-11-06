@@ -85,6 +85,9 @@ gallery:
   h: 1920
   span: 4
   start: 7
+filters:
+- music
+- merch
 ---
 ## Context
 Rytmus is one of the biggest names in Slovak and Czech hip-hop. The work covers his label, his releases and the products around them.

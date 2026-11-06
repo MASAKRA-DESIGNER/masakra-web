@@ -54,6 +54,9 @@ gallery:
   span: 4
   start: 5
 featured: true
+filters:
+- music
+- identity
 ---
 ## Context
 Heľenine Oči is a seven-piece band from Prešov, active since 1999 — rock, ska, reggae, folk and metal, over 100 live shows a year.

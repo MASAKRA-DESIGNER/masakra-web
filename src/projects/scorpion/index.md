@@ -53,6 +53,8 @@ gallery:
   w: 1080
   h: 1350
   span: 6
+filters:
+- merch
 ---
 ## Type
 Gothic lettering in scorpion yellow. Toxic, not luxury.

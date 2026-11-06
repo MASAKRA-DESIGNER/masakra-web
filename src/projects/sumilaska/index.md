@@ -53,6 +53,8 @@ gallery:
   w: 1080
   h: 1920
   span: 4
+filters:
+- identity
 ---
 ## Context
 A family flower shop on Čergovská street in Prešov. [doplň: čo bolo pred redizajnom, prečo nová značka]

@@ -35,5 +35,11 @@
       "name": "[Meno]",
       "role": "[Rola, firma]"
     }
-  }
+  },
+  "servicesImgs": [
+    "mikolux",
+    "pov-by-loreal",
+    "baba-yaga",
+    "helfest-2025"
+  ]
 }

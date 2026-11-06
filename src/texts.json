@@ -44,8 +44,8 @@
     "svLabel": "(05) Services",
     "svItems": [
       "Brand identity systems",
-      "Packaging & PR boxes",
-      "Merch, apparel & fightwear",
+      "Event worlds & PR kits",
+      "Merch & fightwear",
       "Campaign visuals"
     ],
     "svFrom": "Engagements from",
@@ -63,7 +63,29 @@
     "csIndustry": "Industry",
     "csNext": "Next project",
     "csResults": "Outcome",
-    "csAgency": "In collaboration with"
+    "csAgency": "In collaboration with",
+    "workTitle": "Selected work",
+    "fAll": "All",
+    "fLabel": "Filter work",
+    "f": {
+      "event": "Events",
+      "identity": "Identity",
+      "music": "Music",
+      "merch": "Merch"
+    },
+    "heroMeta": "Prešov, SK · working worldwide",
+    "reelLabel": "Showreel 2024–2026 · POV by L’Oréal · Garnier · Baba Yaga",
+    "view": "View ↗",
+    "motion": "Motion",
+    "ap1t": "What it stands for",
+    "ap2t": "Rules, not pictures",
+    "ap3t": "Into the real world",
+    "svTags": [
+      "MIKOLUX · SUMILASKA",
+      "L’Oréal · Garnier",
+      "Baba Yaga · Scorpion",
+      "HELFEST · Rytmus"
+    ]
   },
   "sk": {
     "htmlLang": "sk",
@@ -109,9 +131,9 @@
     "ap3": "Packaging, oblečenie, kampane, digitál. Až po materiál, technológiu potlače a to, ako to sedí v ruke.",
     "svLabel": "(05) Služby",
     "svItems": [
-      "Vizuálne identity a brand systémy",
-      "Packaging a PR boxy",
-      "Merch, oblečenie a fightwear",
+      "Vizuálne identity a systémy",
+      "Eventy a PR kity",
+      "Merch a fightwear",
       "Kampaňové vizuály"
     ],
     "svFrom": "Projekty od",
@@ -129,6 +151,28 @@
     "csIndustry": "Odvetvie",
     "csNext": "Ďalší projekt",
     "csResults": "Výsledky",
-    "csAgency": "V spolupráci s"
+    "csAgency": "V spolupráci s",
+    "workTitle": "Vybrané práce",
+    "fAll": "Všetko",
+    "fLabel": "Filtrovať práce",
+    "f": {
+      "event": "Eventy",
+      "identity": "Identita",
+      "music": "Hudba",
+      "merch": "Merch"
+    },
+    "heroMeta": "Prešov · pracujem pre celý svet",
+    "reelLabel": "Showreel 2024–2026 · POV by L’Oréal · Garnier · Baba Yaga",
+    "view": "Pozrieť ↗",
+    "motion": "Motion",
+    "ap1t": "Za čím stojí",
+    "ap2t": "Pravidlá, nie obrázky",
+    "ap3t": "Do reálneho sveta",
+    "svTags": [
+      "MIKOLUX · SUMILASKA",
+      "L’Oréal · Garnier",
+      "Baba Yaga · Scorpion",
+      "HELFEST · Rytmus"
+    ]
   }
 }
