@@ -61,7 +61,8 @@ gallery:
   h: 1350
   ratio: 4-5
   span: 6
-- src: k-colours.webp
+- video: v-palette.mp4
+  poster: v-palette.webp
   alt: Colour palette — black, red, white
   w: 1080
   h: 1350
