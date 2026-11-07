@@ -11,6 +11,15 @@ scope:
 - Tour campaign
 - Merch
 summary: A seven-piece band from Prešov, 100+ shows a year. A new script logotype — clearer, not louder — and the campaign for an eight-country tour.
+hero:
+  video: v-hero.mp4
+  poster: v-hero.webp
+  alt: Heľenine Oči logotype — animated reveal
+cover:
+  src: v-hero.webp
+  video: v-hero.mp4
+  alt: Heľenine Oči logotype
+  ratio: 16-9
 gallery: []
 featured: true
 draft: true
