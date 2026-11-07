@@ -7,6 +7,17 @@ scope:
 - Turné kampaň
 - Merch
 summary: Sedemčlenná kapela z Prešova, 100+ koncertov ročne. Nový písaný logotyp — čitateľnejší, nie hlasnejší — a kampaň na turné po ôsmich krajinách.
+alts:
+- Kapela pred novým logotypom
+- Key visual kapely na značkovej červenej
+- Tričko s logom
+- Polep dodávky na turné
+- Backdrop na pódium
+- Web kapely
+- 8 Flags Tour 2027 — key visual
+- Story — Bratislava
+- Story — Londýn
+- Story — Praha
 ---
 ## Kontext
 Heľenine Oči sú sedemčlenná kapela z Prešova, aktívna od roku 1999 — rock, ska, reggae, folk aj metal, viac ako 100 koncertov ročne.
@@ -22,3 +33,6 @@ Jeden key visual prispôsobený každej zastávke — Slovensko, Česko, Rakúsk
 
 ## Výsledok
 Jedna značka, ktorá funguje na merchi, na dodávke na turné, na digitálnych platformách aj v malých veľkostiach — bez toho, aby kapela stratila svoj charakter.
+
+## Kredity
+Fotografie kapely: Stanka Topolská, Erik Wittner.
