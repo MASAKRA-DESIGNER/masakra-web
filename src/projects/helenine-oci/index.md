@@ -26,33 +26,6 @@ gallery:
   w: 2400
   h: 1350
   span: 12
-- src: p-band-red.webp
-  alt: Band key visual on brand red
-  w: 1600
-  h: 2000
-  ratio: 4-5
-  span: 6
-- src: p-tee.webp
-  alt: Logo tee
-  w: 1024
-  h: 1536
-  ratio: 4-5
-  span: 6
-- src: p-van.webp
-  alt: Tour van livery
-  w: 2400
-  h: 1555
-  span: 12
-- src: p-stage.webp
-  alt: Stage backdrop
-  w: 1800
-  h: 1200
-  span: 6
-- src: p-web.webp
-  alt: Band website
-  w: 1800
-  h: 1200
-  span: 6
 - src: 04-tour-key-visual.webp
   alt: 8 Flags Tour 2027 — key visual
   w: 1080

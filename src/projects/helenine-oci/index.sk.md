@@ -9,11 +9,6 @@ scope:
 summary: Sedemčlenná kapela z Prešova, 100+ koncertov ročne. Nový písaný logotyp — čitateľnejší, nie hlasnejší — a kampaň na turné po ôsmich krajinách.
 alts:
 - Kapela pred novým logotypom
-- Key visual kapely na značkovej červenej
-- Tričko s logom
-- Polep dodávky na turné
-- Backdrop na pódium
-- Web kapely
 - 8 Flags Tour 2027 — key visual
 - Story — Bratislava
 - Story — Londýn
