@@ -38,10 +38,11 @@ gallery:
   h: 1350
   ratio: 4-5
   span: 6
-- src: k-band-red.webp
-  alt: The band
-  w: 2400
-  h: 1352
+- video: v-lineup.mp4
+  poster: v-lineup.webp
+  alt: The line-up, with an icon set drawn in the logo's line
+  w: 1920
+  h: 1080
   span: 12
 - src: k-drums.webp
   alt: Kick drum head

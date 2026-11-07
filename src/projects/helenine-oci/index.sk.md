@@ -11,7 +11,7 @@ alts:
 - Kapela pred novým logotypom
 - Logo na obrazovke na pódiu
 - Frontman pod logom
-- Kapela
+- Zostava kapely so sadou ikon v línii loga
 - Blana basového bubna
 - Obal vinylu
 - Detail logotypu
