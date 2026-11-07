@@ -7,8 +7,6 @@ scope:
 - Turné kampaň
 - Merch
 summary: Sedemčlenná kapela z Prešova, 100+ koncertov ročne. Nový písaný logotyp — čitateľnejší, nie hlasnejší — a kampaň na turné po ôsmich krajinách.
-cover:
-  alt: Nový logotyp
 ---
 ## Kontext
 Heľenine Oči sú sedemčlenná kapela z Prešova, aktívna od roku 1999 — rock, ska, reggae, folk aj metal, viac ako 100 koncertov ročne.
