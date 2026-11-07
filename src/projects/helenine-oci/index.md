@@ -26,6 +26,47 @@ gallery:
   w: 2400
   h: 1350
   span: 12
+- src: k-stage.webp
+  alt: Logo on the stage screen, live
+  w: 1080
+  h: 1350
+  ratio: 4-5
+  span: 6
+- src: k-singer.webp
+  alt: Frontman under the logo
+  w: 1080
+  h: 1350
+  ratio: 4-5
+  span: 6
+- src: k-band-red.webp
+  alt: The band
+  w: 2400
+  h: 1352
+  span: 12
+- src: k-drums.webp
+  alt: Kick drum head
+  w: 1080
+  h: 1350
+  ratio: 4-5
+  span: 6
+- src: k-vinyl.webp
+  alt: Vinyl sleeve
+  w: 1080
+  h: 1350
+  ratio: 4-5
+  span: 6
+- src: k-detail.webp
+  alt: Logotype detail
+  w: 1080
+  h: 1350
+  ratio: 4-5
+  span: 6
+- src: k-colours.webp
+  alt: Colour palette — black, red, white
+  w: 1080
+  h: 1350
+  ratio: 4-5
+  span: 6
 - src: 04-tour-key-visual.webp
   alt: 8 Flags Tour 2027 — key visual
   w: 1080
